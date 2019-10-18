@@ -30,6 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@{cat.url}"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/cat" />
 
         </androidx.cardview.widget.CardView>

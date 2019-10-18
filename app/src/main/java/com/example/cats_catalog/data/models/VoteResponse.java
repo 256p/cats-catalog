@@ -2,6 +2,8 @@ package com.example.cats_catalog.data.models;
 
 public class VoteResponse {
 
+    public static final String MESSAGE_SUCCESS = "SUCCESS";
+
     private String message;
     private int id;
 

@@ -1,6 +1,7 @@
 package com.example.cats_catalog.ui.activities;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getCatsLiveData().observe(this, cats -> {
             adapter.updateData(cats);
             binding.swipeRefresh.setRefreshing(false);
+            binding.swipeRefresh.setVisibility(View.VISIBLE);
+            binding.progressBar.setVisibility(View.GONE);
         });
     }
 }

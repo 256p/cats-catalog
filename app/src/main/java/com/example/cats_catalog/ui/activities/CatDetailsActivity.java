@@ -2,30 +2,35 @@ package com.example.cats_catalog.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.example.cats_catalog.App;
 import com.example.cats_catalog.R;
 import com.example.cats_catalog.data.models.Cat;
+import com.example.cats_catalog.data.models.VoteResponse;
+import com.example.cats_catalog.data.models.VoteType;
 import com.example.cats_catalog.databinding.ActivityCatDetailsBinding;
 import com.example.cats_catalog.viewmodel.CatDetailsViewModel;
-import com.squareup.picasso.Callback;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
-public class CatDetailsActivity extends AppCompatActivity {
+public class CatDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String EXTRA_CAT = "CAT";
     private static final String EXTRA_IMAGE_TRANSITION_NAME = "IMAGE_TRANSITION_NAME";
@@ -54,9 +59,64 @@ public class CatDetailsActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && transitionName != null) {
             binding.catImage.setTransitionName(transitionName);
+            supportStartPostponedEnterTransition();
         }
 
         configureImage();
+        setOnClickListeners();
+        configureLiveDataObservers();
+    }
+
+    private void setOnClickListeners() {
+        binding.downVote.setOnClickListener(this);
+        binding.upVote.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        VoteType voteType = null;
+        switch (view.getId()) {
+            case R.id.down_vote:
+                voteType = VoteType.DOWN_VOTE;
+                break;
+            case R.id.up_vote:
+                voteType = VoteType.UP_VOTE;
+                break;
+        }
+        if (voteType != null) {
+            setButtonsClickable(false);
+            enableGrayOutOnButtons(true);
+            viewModel.sendVote(voteType, cat);
+        }
+    }
+
+    private void setButtonsClickable(boolean clickable) {
+        binding.downVote.setClickable(clickable);
+        binding.upVote.setClickable(clickable);
+    }
+
+    private void enableGrayOutOnButtons(boolean enable) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (enable) {
+                binding.buttonsContainer.setForeground(new ColorDrawable(ContextCompat.getColor(this, R.color.transparentOverlay)));
+            } else {
+                binding.buttonsContainer.setForeground(null);
+            }
+        }
+    }
+
+    private void configureLiveDataObservers() {
+        viewModel.getVoteResponseLiveData().observe(this, voteResponse -> {
+            String message;
+            if (voteResponse.getMessage().equals(VoteResponse.MESSAGE_SUCCESS)) {
+                message = getString(R.string.vote_succeed);
+            } else {
+                message = getString(R.string.vote_error);
+            }
+            Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
+            setButtonsClickable(true);
+            enableGrayOutOnButtons(false);
+        });
     }
 
     private void configureImage() {
@@ -64,20 +124,8 @@ public class CatDetailsActivity extends AppCompatActivity {
             picasso.load(cat.getUrl())
                     .fit()
                     .centerInside()
-                    .noFade()
                     .placeholder(R.drawable.cat)
-                    .into(binding.catImage, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            supportStartPostponedEnterTransition();
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            supportStartPostponedEnterTransition();
-                        }
-                    });
-            binding.catImage.setScaleType(ImageView.ScaleType.FIT_START);
+                    .into(binding.catImage);
         }
     }
 

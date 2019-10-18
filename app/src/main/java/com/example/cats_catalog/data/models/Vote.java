@@ -5,6 +5,11 @@ public class Vote {
     private String image_id;
     private int value;
 
+    public Vote(String image_id, int value) {
+        this.image_id = image_id;
+        this.value = value;
+    }
+
     public String getImage_id() {
         return image_id;
     }

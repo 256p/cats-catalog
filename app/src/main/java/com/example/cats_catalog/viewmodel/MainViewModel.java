@@ -36,9 +36,17 @@ public class MainViewModel extends ViewModel {
         disposable.add(apiService.getCats(40)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        cats -> catsLiveData.postValue(cats),
+                .subscribe(cats -> catsLiveData.postValue(cats),
                         throwable -> {}
                         ));
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        if (disposable != null) {
+            disposable.clear();
+            disposable = null;
+        }
     }
 }
