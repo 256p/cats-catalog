@@ -39,7 +39,7 @@ public class CatDetailsViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(voteResponse -> voteResponseLiveData.postValue(voteResponse),
-                        throwable -> {}));
+                        throwable -> voteResponseLiveData.postValue(new VoteResponse(VoteResponse.MESSAGE_ERROR, 0))));
     }
 
     @Override

@@ -62,7 +62,7 @@
                     android:gravity="center"
                     android:text="@string/down_vote"
                     android:textSize="@dimen/sizeTextPrimary"
-                    android:textColor="@color/textWhite"/>
+                    android:textColor="@color/colorTextWhite"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -100,7 +100,7 @@
                     android:gravity="center"
                     android:text="@string/up_vote"
                     android:textSize="@dimen/sizeTextPrimary"
-                    android:textColor="@color/textWhite"/>
+                    android:textColor="@color/colorTextWhite"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

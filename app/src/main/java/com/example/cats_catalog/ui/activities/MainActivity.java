@@ -12,8 +12,13 @@ import com.example.cats_catalog.R;
 import com.example.cats_catalog.adapters.CatsAdapter;
 import com.example.cats_catalog.databinding.ActivityMainBinding;
 import com.example.cats_catalog.viewmodel.MainViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int STATE_PROGRESS = 1;
+    private static final int STATE_ERROR = 2;
+    private static final int STATE_SUCCESS = 3;
 
     private ActivityMainBinding binding;
     private MainViewModel viewModel;
@@ -27,8 +32,35 @@ public class MainActivity extends AppCompatActivity {
 
         binding.swipeRefresh.setOnRefreshListener(() -> viewModel.fetchCats());
 
+        setOnClickListeners();
         configureRV();
         configureLiveDataObservers();
+    }
+
+    private void setOnClickListeners() {
+        binding.retryBtn.setOnClickListener(v -> {
+            setUpVisibility(STATE_PROGRESS);
+            viewModel.fetchCats();
+        });
+    }
+
+    private void setUpVisibility(int state) {
+        switch (state) {
+            case STATE_PROGRESS:
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.swipeRefresh.setVisibility(View.GONE);
+                binding.errorContainer.setVisibility(View.GONE);
+                break;
+            case STATE_ERROR:
+                binding.progressBar.setVisibility(View.GONE);
+                binding.swipeRefresh.setVisibility(View.GONE);
+                binding.errorContainer.setVisibility(View.VISIBLE);
+                break;
+            case STATE_SUCCESS:
+                binding.progressBar.setVisibility(View.GONE);
+                binding.swipeRefresh.setVisibility(View.VISIBLE);
+                binding.errorContainer.setVisibility(View.GONE);
+        }
     }
 
     private void configureRV() {
@@ -41,8 +73,16 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getCatsLiveData().observe(this, cats -> {
             adapter.updateData(cats);
             binding.swipeRefresh.setRefreshing(false);
-            binding.swipeRefresh.setVisibility(View.VISIBLE);
-            binding.progressBar.setVisibility(View.GONE);
+            setUpVisibility(STATE_SUCCESS);
+        });
+        viewModel.getErrorsLiveData().observe(this, integer -> {
+            binding.swipeRefresh.setRefreshing(false);
+            if (binding.swipeRefresh.getVisibility() == View.VISIBLE) {
+                Snackbar.make(binding.getRoot(), getString(R.string.downloading_error), Snackbar.LENGTH_SHORT).show();
+            } else {
+                setUpVisibility(STATE_ERROR);
+            }
         });
     }
+
 }

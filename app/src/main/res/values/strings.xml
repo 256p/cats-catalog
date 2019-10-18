@@ -8,4 +8,6 @@
     <string name="up_vote">Vote Up</string>
     <string name="vote_succeed">Vote succeed</string>
     <string name="vote_error">Voting error</string>
+    <string name="downloading_error">Downloading error</string>
+    <string name="retey">Retry</string>
 </resources>

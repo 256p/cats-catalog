@@ -1,7 +1,5 @@
 package com.example.cats_catalog;
 
-import android.app.Application;
-
 import androidx.databinding.DataBindingUtil;
 
 import com.example.cats_catalog.di.AppComponent;
