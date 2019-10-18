@@ -1,3 +1,7 @@
 <resources>
+    <string name="labelMainActivity">Cats</string>
+    <string name="labelCatDetailsActivity">Cat Details</string>
+
     <string name="app_name">cats-catalog</string>
+    <string name="cat">Cat</string>
 </resources>
