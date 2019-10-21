@@ -29,6 +29,10 @@ public class App extends DaggerApplication {
         return component;
     }
 
+    public static void setComponent(AppComponent component) {
+        App.component = component;
+    }
+
     public static AppComponent getComponent() {
         return component;
     }
