@@ -31,6 +31,15 @@ android {
     dataBinding {
         enabled = true
     }
+
+    signingConfigs {
+        release {
+            storeFile file("petkevich.jks")
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "1234567"
+        }
+    }
 }
 
 dependencies {
