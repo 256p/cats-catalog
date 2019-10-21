@@ -13,4 +13,9 @@
         <item name="colorButtonNormal">@color/colorPrimary</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
 </resources>

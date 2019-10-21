@@ -1,5 +1,7 @@
 package com.example.cats_catalog.ui.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -83,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
                 setUpVisibility(STATE_ERROR);
             }
         });
+    }
+
+    public static void startActivity(Activity activity) {
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
     }
 
 }
