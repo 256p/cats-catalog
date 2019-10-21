@@ -2,7 +2,7 @@
     <string name="labelMainActivity">Cats</string>
     <string name="labelCatDetailsActivity">Cat Details</string>
 
-    <string name="app_name">cats-catalog</string>
+    <string name="app_name">Cats</string>
     <string name="cat">Cat</string>
     <string name="down_vote">Vote Down</string>
     <string name="up_vote">Vote Up</string>
