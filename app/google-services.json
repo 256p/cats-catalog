@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "876270720524",
+    "firebase_url": "https://cat-gallery-efa5c.firebaseio.com",
+    "project_id": "cat-gallery-efa5c",
+    "storage_bucket": "cat-gallery-efa5c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876270720524:android:7440bb89fd5955e1918029",
+        "android_client_info": {
+          "package_name": "com.bidstack.cat_gallery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "876270720524-lirekn4ug749v7c6ffl1pdvrm80pu783.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMjD1aznuxPTTGb-QFSuZ6UrC9GeNFC4I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "876270720524-lirekn4ug749v7c6ffl1pdvrm80pu783.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

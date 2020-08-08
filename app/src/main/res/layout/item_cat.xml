@@ -5,7 +5,7 @@
     <data>
         <variable
             name="cat"
-            type="com.example.cats_catalog.data.models.Cat" />
+            type="com.bidstack.cat_gallery.data.models.Cat" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

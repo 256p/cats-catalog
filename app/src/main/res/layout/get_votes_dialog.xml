@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="64dp"
+    android:paddingBottom="64dp"
+    android:paddingStart="32dp"
+    android:paddingEnd="32dp">
+
+    <TextView
+        android:id="@+id/getVotesInfoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/getVotesBtn"
+        android:text="@string/you_will_need_to_see_ad_to_get_votes"/>
+
+    <TextView
+        android:layout_marginTop="64dp"
+        android:id="@+id/getVotesBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/getVotesInfoText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/get_votes"
+        android:textAllCaps="true"
+        android:textColor="@color/colorTextWhite"
+        android:background="@drawable/btn_bg"
+        android:padding="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

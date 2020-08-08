@@ -1,5 +1,5 @@
 <resources>
-    <string name="labelMainActivity">Cats</string>
+    <string name="labelMainActivity">Cat Gallery</string>
     <string name="labelCatDetailsActivity">Cat Details</string>
 
     <string name="app_name">Cats</string>
@@ -9,5 +9,9 @@
     <string name="vote_succeed">Vote succeed</string>
     <string name="vote_error">Voting error</string>
     <string name="downloading_error">Downloading error</string>
-    <string name="retey">Retry</string>
+    <string name="retry">Retry</string>
+    <string name="votes_left">Votes left: %1$d</string>
+    <string name="you_are_out_of_votes">You are out of votes</string>
+    <string name="get_votes">Get Votes</string>
+    <string name="you_will_need_to_see_ad_to_get_votes">You will need to see ad to get votes</string>
 </resources>
