@@ -10,6 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bidstack.cat_gallery.R;
+import com.bidstack.cat_gallery.data.PreferencesHelper;
+import com.bidstack.cat_gallery.di.DaggerAppComponent;
+
+import javax.inject.Inject;
 
 public class GetVotesDialog extends Dialog {
     public GetVotesDialog(@NonNull Context context) {
@@ -24,15 +28,20 @@ public class GetVotesDialog extends Dialog {
         super(context, cancelable, cancelListener);
     }
 
+    @Inject
+    PreferencesHelper preferencesHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.get_votes_dialog);
         View getVotesBtn = findViewById(R.id.getVotesBtn);
 
-        getVotesBtn.setOnClickListener(v -> {
+        DaggerAppComponent.factory().create(getContext()).inject(this);
 
-            dismiss();
+        getVotesBtn.setOnClickListener(v -> {
+            preferencesHelper.setVotesCount(3);
+            cancel();
         });
 
         super.onCreate(savedInstanceState);

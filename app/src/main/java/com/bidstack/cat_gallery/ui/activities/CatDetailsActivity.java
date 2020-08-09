@@ -1,10 +1,12 @@
 package com.bidstack.cat_gallery.ui.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.amazon.device.ads.Ad;
+import com.amazon.device.ads.AdError;
+import com.amazon.device.ads.DefaultAdListener;
+import com.amazon.device.ads.InterstitialAd;
 import com.bidstack.cat_gallery.R;
 import com.bidstack.cat_gallery.data.models.Cat;
 import com.bidstack.cat_gallery.data.models.VoteResponse;
@@ -46,6 +52,7 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
     private CatDetailsViewModel viewModel;
     private Cat cat;
     private Menu mMenu;
+    private InterstitialAd interstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +63,10 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(null);
         }
 
         cat = getIntent().getParcelableExtra(EXTRA_CAT);
@@ -69,6 +80,28 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
         configureImage();
         setOnClickListeners();
         configureLiveDataObservers();
+
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.loadAd();
+        interstitialAd.setListener(new DefaultAdListener() {
+            @Override
+            public void onAdFailedToLoad(Ad ad, AdError error) {
+                Log.e("Cat_Gallery", "Ad failed to load. Code: " + error.getCode() + ", Message: " + error.getMessage());
+                super.onAdFailedToLoad(ad, error);
+            }
+
+            @Override
+            public void onAdDismissed(Ad ad) {
+                super.onAdDismissed(ad);
+                finish();
+            }
+
+            @Override
+            public void onAdCollapsed(Ad ad) {
+                super.onAdCollapsed(ad);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -87,6 +120,13 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
     private void setOnClickListeners() {
         binding.downVote.setOnClickListener(this);
         binding.upVote.setOnClickListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!interstitialAd.showAd()) {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -181,7 +221,11 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
                 break;
             case R.id.action_votes_left:
                 if (viewModel.getVotesCount() <= 0) {
-                    new GetVotesDialog(this).show();
+                    Dialog dialog = new GetVotesDialog(this);
+                    dialog.setOnCancelListener(d -> {
+                        setMenuVotesCount();
+                    });
+                    dialog.show();
                 }
                 break;
         }

@@ -49,7 +49,7 @@ public class MainViewModel extends ViewModel {
                         throwable -> errorsLiveData.postValue(Errors.CANT_DOWNLOAD)));
     }
 
-    public int getVoteCount() {
+    public int getVotesCount() {
         return preferencesHelper.getVotesCount();
     }
 
