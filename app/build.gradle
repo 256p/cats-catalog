@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.bidstack.pubguard.aspectj-ext'
 
 def apiPropertiesFile = rootProject.file("api.properties")
 def apiProperties = new Properties()
@@ -11,10 +12,10 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.bidstack.cat_gallery"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 4
+        versionName "1.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
@@ -40,16 +41,17 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("petkevich.jks")
-            storePassword "123456"
+            storeFile file("catGallery.jks")
+            storePassword "mR}>*3V.x>\$dGC2F"
             keyAlias "key0"
-            keyPassword "1234567"
+            keyPassword ">b=DkMB5CqXr,8p;"
         }
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: 'pubguard-1.0.aar')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
@@ -77,6 +79,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:19.3.0'
     implementation 'com.google.firebase:firebase-analytics:17.4.4'
     implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
+    implementation 'com.google.android.gms:play-services-basement:17.3.0'
+
+    implementation "androidx.core:core-ktx:1.3.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3'
 
     implementation 'com.amazon.android:mobile-ads:6.0.0'
 

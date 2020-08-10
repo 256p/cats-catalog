@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import dagger.android.support.DaggerAppCompatActivity;

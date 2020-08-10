@@ -205,11 +205,18 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
 
     private void configureImage() {
         if (cat != null) {
-            picasso.load(cat.getUrl())
-                    .fit()
-                    .centerInside()
-                    .placeholder(R.drawable.cat)
-                    .into(binding.catImage);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                picasso.load(cat.getUrl())
+                        .fit()
+                        .centerInside()
+                        .placeholder(R.drawable.cat)
+                        .into(binding.catImage);
+            } else {
+                picasso.load(cat.getUrl())
+                        .fit()
+                        .centerInside()
+                        .into(binding.catImage);
+            }
         }
     }
 

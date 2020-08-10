@@ -3,7 +3,6 @@ package com.bidstack.cat_gallery.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.bidstack.cat_gallery.App;
 import com.bidstack.cat_gallery.data.ApiService;
 import com.bidstack.cat_gallery.data.PreferencesHelper;
 import com.bidstack.cat_gallery.data.models.Cat;

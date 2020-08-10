@@ -1,5 +1,6 @@
 package com.bidstack.cat_gallery.adapters;
 
+import android.os.Build;
 import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
@@ -17,6 +18,10 @@ public class ImageBindingAdapter {
 
     @BindingAdapter("android:src")
     public void loadImage(ImageView view, String url) {
-        picasso.load(url).fit().centerCrop().placeholder(R.drawable.cat).into(view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            picasso.load(url).fit().centerCrop().placeholder(R.drawable.cat).into(view);
+        } else {
+            picasso.load(url).fit().centerCrop().into(view);
+        }
     }
 }

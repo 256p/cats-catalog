@@ -1,6 +1,5 @@
 <resources>
     <string name="labelMainActivity">Cat Gallery</string>
-    <string name="labelCatDetailsActivity">Cat Details</string>
 
     <string name="app_name">Cat Gallery</string>
     <string name="cat">Cat</string>
