@@ -7,6 +7,9 @@ buildscript {
         flatDir {
             dirs 'libs'
         }
+        maven {
+            url "https://dl.bintray.com/ironsource-mobile/android-sdk"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.1'

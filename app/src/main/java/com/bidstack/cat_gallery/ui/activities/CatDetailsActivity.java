@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
@@ -20,10 +21,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.amazon.device.ads.Ad;
-import com.amazon.device.ads.AdError;
-import com.amazon.device.ads.DefaultAdListener;
-import com.amazon.device.ads.InterstitialAd;
 import com.bidstack.cat_gallery.R;
 import com.bidstack.cat_gallery.data.models.Cat;
 import com.bidstack.cat_gallery.data.models.VoteResponse;
@@ -32,6 +29,12 @@ import com.bidstack.cat_gallery.databinding.ActivityCatDetailsBinding;
 import com.bidstack.cat_gallery.ui.GetVotesDialog;
 import com.bidstack.cat_gallery.viewmodel.CatDetailsViewModel;
 import com.google.android.material.snackbar.Snackbar;
+import com.ironsource.mediationsdk.ISBannerSize;
+import com.ironsource.mediationsdk.IronSource;
+import com.ironsource.mediationsdk.IronSourceBannerLayout;
+import com.ironsource.mediationsdk.integration.IntegrationHelper;
+import com.ironsource.mediationsdk.logger.IronSourceError;
+import com.ironsource.mediationsdk.sdk.InterstitialListener;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -52,7 +55,6 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
     private CatDetailsViewModel viewModel;
     private Cat cat;
     private Menu mMenu;
-    private InterstitialAd interstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,27 +83,71 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
         setOnClickListeners();
         configureLiveDataObservers();
 
-        interstitialAd = new InterstitialAd(this);
-        interstitialAd.loadAd();
-        interstitialAd.setListener(new DefaultAdListener() {
+        IronSource.setInterstitialListener(new InterstitialListener() {
             @Override
-            public void onAdFailedToLoad(Ad ad, AdError error) {
-                Log.e("Cat_Gallery", "Ad failed to load. Code: " + error.getCode() + ", Message: " + error.getMessage());
-                super.onAdFailedToLoad(ad, error);
+            public void onInterstitialAdReady() {
+                Log.d("IronSource", "onInterstitialAdReady Ad Ready");
             }
 
             @Override
-            public void onAdDismissed(Ad ad) {
-                super.onAdDismissed(ad);
+            public void onInterstitialAdLoadFailed(IronSourceError ironSourceError) {
+                Log.d("IronSource", "onInterstitialAdLoadFailed Load Error: " + ironSourceError.toString());
                 finish();
             }
 
             @Override
-            public void onAdCollapsed(Ad ad) {
-                super.onAdCollapsed(ad);
+            public void onInterstitialAdOpened() {
+                Log.d("IronSource", "onInterstitialAdOpened Ad Opened");
+            }
+
+            @Override
+            public void onInterstitialAdClosed() {
+                Log.d("IronSource", "onInterstitialAdClosed Closed");
                 finish();
+            }
+
+            @Override
+            public void onInterstitialAdShowSucceeded() {
+                Log.d("IronSource", "onInterstitialAdShowSucceeded Ad Show Success");
+            }
+
+            @Override
+            public void onInterstitialAdShowFailed(IronSourceError ironSourceError) {
+                Log.d("IronSource", "onInterstitialAdShowFailed Show Error: " + ironSourceError.toString());
+                finish();
+            }
+
+            @Override
+            public void onInterstitialAdClicked() {
+                Log.d("IronSource", "onInterstitialAdClicked Ad Clicked");
             }
         });
+
+        IronSource.init(
+                this,
+                "d0e265e5",
+                IronSource.AD_UNIT.REWARDED_VIDEO,
+                IronSource.AD_UNIT.INTERSTITIAL,
+                IronSource.AD_UNIT.BANNER
+        );
+
+        IronSource.loadInterstitial();
+
+        IronSourceBannerLayout banner = IronSource.createBanner(this, ISBannerSize.BANNER);
+        banner.setId(View.generateViewId());
+        binding.rootContainer.addView(banner);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(binding.rootContainer);
+        constraintSet.connect(binding.catImage.getId(), ConstraintSet.BOTTOM, banner.getId(), ConstraintSet.TOP);
+        constraintSet.connect(banner.getId(), ConstraintSet.TOP, binding.catImage.getId(), ConstraintSet.BOTTOM);
+        constraintSet.connect(banner.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+        constraintSet.connect(banner.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+        constraintSet.connect(banner.getId(), ConstraintSet.BOTTOM, binding.buttonsContainer.getId(), ConstraintSet.TOP);
+        constraintSet.connect(binding.buttonsContainer.getId(), ConstraintSet.TOP, banner.getId(), ConstraintSet.BOTTOM);
+        constraintSet.applyTo(binding.rootContainer);
+        IronSource.loadBanner(banner);
+
+        IntegrationHelper.validateIntegration(this);
     }
 
     @Override
@@ -124,7 +170,9 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
 
     @Override
     public void onBackPressed() {
-        if (!interstitialAd.showAd()) {
+        if (IronSource.isInterstitialReady()) {
+            IronSource.showInterstitial();
+        } else {
             super.onBackPressed();
         }
     }

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 import androidx.multidex.MultiDexApplication;
 
-import com.amazon.device.ads.AdRegistration;
 import com.bidstack.cat_gallery.di.AppComponent;
 import com.bidstack.cat_gallery.di.BindingComponent;
 import com.bidstack.cat_gallery.di.DaggerAppComponent;
@@ -43,9 +42,6 @@ public class App extends MultiDexApplication implements HasAndroidInjector {
                 .appComponent(appComponent)
                 .build();
         DataBindingUtil.setDefaultComponent(bindingComponent);
-
-        AdRegistration.setAppKey("4d871c533ea642798b3f4aff5a8a5b73");
-        AdRegistration.enableLogging(true);
 
         Pubguard.init(this, "9595e51e-0adb-4dc1-b910-662e718a6c38");
 
