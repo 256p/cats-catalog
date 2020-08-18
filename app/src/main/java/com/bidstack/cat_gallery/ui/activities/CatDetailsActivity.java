@@ -55,6 +55,7 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
     private CatDetailsViewModel viewModel;
     private Cat cat;
     private Menu mMenu;
+    private IronSourceBannerLayout banner = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +134,7 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
 
         IronSource.loadInterstitial();
 
-        IronSourceBannerLayout banner = IronSource.createBanner(this, ISBannerSize.BANNER);
+        banner = IronSource.createBanner(this, ISBannerSize.BANNER);
         banner.setId(View.generateViewId());
         binding.rootContainer.addView(banner);
         ConstraintSet constraintSet = new ConstraintSet();
@@ -300,5 +301,11 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
                 transitionName
         );
         activity.startActivity(intent, options.toBundle());
+    }
+
+    @Override
+    protected void onDestroy() {
+        IronSource.destroyBanner(banner);
+        super.onDestroy();
     }
 }
