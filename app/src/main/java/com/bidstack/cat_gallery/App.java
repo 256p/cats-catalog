@@ -1,5 +1,7 @@
 package com.bidstack.cat_gallery;
 
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 import androidx.multidex.MultiDexApplication;
@@ -12,6 +14,9 @@ import com.bidstack.pubguard.Pubguard;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
+import com.vungle.warren.InitCallback;
+import com.vungle.warren.Vungle;
+import com.vungle.warren.error.VungleException;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -43,7 +48,7 @@ public class App extends MultiDexApplication implements HasAndroidInjector {
                 .build();
         DataBindingUtil.setDefaultComponent(bindingComponent);
 
-        Pubguard.init(this, "9595e51e-0adb-4dc1-b910-662e718a6c38");
+        Pubguard.init(this, "834db244-69fb-42c7-bfbd-7ddfb16d6d3c", BuildConfig.VERSION_NAME);
 
         try {
             ProviderInstaller.installIfNeeded(this);
@@ -53,6 +58,24 @@ public class App extends MultiDexApplication implements HasAndroidInjector {
         } catch (GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException | NoSuchAlgorithmException | KeyManagementException e) {
             e.printStackTrace();
         }
+
+        Vungle.init("5fc4c47b93854280cf9cb746", this, new InitCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d("TEST", "Vungle init success");
+            }
+
+            @Override
+            public void onError(VungleException exception) {
+                Log.d("TEST", "Vungle init error");
+                exception.printStackTrace();
+            }
+
+            @Override
+            public void onAutoCacheAdAvailable(String placementId) {
+
+            }
+        });
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }

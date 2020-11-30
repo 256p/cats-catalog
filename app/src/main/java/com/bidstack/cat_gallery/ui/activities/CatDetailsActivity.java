@@ -36,6 +36,7 @@ import com.ironsource.mediationsdk.integration.IntegrationHelper;
 import com.ironsource.mediationsdk.logger.IronSourceError;
 import com.ironsource.mediationsdk.sdk.InterstitialListener;
 import com.squareup.picasso.Picasso;
+import com.vungle.warren.Vungle;
 
 import javax.inject.Inject;
 
@@ -132,7 +133,8 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
                 IronSource.AD_UNIT.BANNER
         );
 
-        IronSource.loadInterstitial();
+        //IronSource.loadInterstitial();
+        Vungle.loadAd("REWARDED-7309231", null);
 
         banner = IronSource.createBanner(this, ISBannerSize.BANNER);
         banner.setId(View.generateViewId());
@@ -171,8 +173,10 @@ public class CatDetailsActivity extends DaggerAppCompatActivity implements View.
 
     @Override
     public void onBackPressed() {
-        if (IronSource.isInterstitialReady()) {
-            IronSource.showInterstitial();
+        /*if (IronSource.isInterstitialReady()) {
+            IronSource.showInterstitial();*/
+        if (Vungle.canPlayAd("REWARDED-7309231")) {
+            Vungle.playAd("REWARDED-7309231", null, null);
         } else {
             super.onBackPressed();
         }
